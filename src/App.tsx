@@ -1,14 +1,9 @@
-import { useEffect } from "react";
-import { getCountry } from "./api/fetchApi";
+import CountryList from "./component/CountryList";
 
 const App = () => {
-  useEffect(() => {
-    getCountry();
-  }, []);
-
   return (
     <>
-      <div>FetchApi</div>
+      <CountryList />
     </>
   );
 };
