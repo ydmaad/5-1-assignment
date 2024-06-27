@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Country } from "../types/type";
 import { getCountry } from "../api/fetchApi";
+import CountryCard from "./CountryCard";
 
 const CountryList: React.FC = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -26,7 +27,7 @@ const CountryList: React.FC = () => {
       <h2>Country</h2>
       <ul>
         {countries.map((country: Country) => {
-          return <li key={country.name.common}>{country.name.common}</li>;
+          return <CountryCard key={country.name.common} country={country} />;
         })}
       </ul>
     </>
