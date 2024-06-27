@@ -3,16 +3,21 @@ import { Country } from "../types/type";
 
 interface CardProps {
   country: Country;
+  clickCountry: (country: Country) => void;
 }
 
-const CountryCard: React.FC<CardProps> = ({ country }) => {
+const CountryCard: React.FC<CardProps> = ({ country, clickCountry }) => {
   return (
     <>
-      <li
+      <div
+        onClick={() => clickCountry(country)}
         style={{
           border: "1px solid black",
           borderRadius: "20px",
           margin: "10px",
+          width: "250px",
+          height: "200px",
+          padding: "10px",
         }}
       >
         <img
@@ -20,7 +25,7 @@ const CountryCard: React.FC<CardProps> = ({ country }) => {
           style={{ width: "250px", height: "150px" }}
         />
         <h3>{country.name.common}</h3>
-      </li>
+      </div>
     </>
   );
 };
