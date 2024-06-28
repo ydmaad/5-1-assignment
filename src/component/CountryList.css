@@ -1,13 +1,13 @@
 .container {
-  display: grid;
-  width: 1000px;
-  height: auto;
   background-color: green;
-
-  grid-template-columns: repeat(5, 1fr);
+  width: 1500px;
+  margin: 0 auto;
 }
 
-.item {
+.list {
   display: grid;
-  background-color: brown;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  height: auto;
+  background-color: firebrick;
 }
