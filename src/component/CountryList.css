@@ -1,5 +1,4 @@
 .container {
-  background-color: green;
   width: 1500px;
   margin: 0 auto;
 }
@@ -9,5 +8,4 @@
   grid-template-columns: repeat(5, 1fr);
   width: 100%;
   height: auto;
-  background-color: firebrick;
 }
