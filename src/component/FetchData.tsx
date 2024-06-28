@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-import supabase from "../api/supabase";
 import { SaveCountry } from "../types/type";
 import CountryCard from "./CountryCard";
 
