@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "../api/supabase";
-import { Country, SaveCountry } from "../types/type";
+import { SaveCountry } from "../types/type";
 
 const FetchData = () => {
   const [saveCountry, setSaveCountry] = useState<SaveCountry[]>([]);
