@@ -99,3 +99,10 @@ export interface PostalCode {
   format: string;
   regex: string;
 }
+
+export interface SaveCountry {
+  id: number;
+  countryName: string;
+  created_at: string;
+  flag: string;
+}

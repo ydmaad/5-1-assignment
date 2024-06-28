@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import supabase from "../api/supabase";
-import { Country } from "../types/type";
+import { Country, SaveCountry } from "../types/type";
 
 const FetchData = () => {
-  const [saveCountry, setSaveCountry] = useState<Country[]>([]);
+  const [saveCountry, setSaveCountry] = useState<SaveCountry[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,13 +20,24 @@ const FetchData = () => {
 
   return (
     <>
-      <div>
-        <h2>supabase에 저장된 나라</h2>
-        {saveCountry.map((country) => {
-          return <div key={country}></div>;
-        })}
+      <div className="container">
+        <div className="item">
+          <h2>내가 선택한 나라</h2>
+          <div className="list">
+            {saveCountry.map((country: SaveCountry) => {
+              return (
+                <div key={`${country.id}`}>
+                  <img
+                    src={country.flag}
+                    style={{ width: "250px", height: "150px" }}
+                  />
+                  <h3>{country.countryName}</h3>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
-      ;
     </>
   );
 };

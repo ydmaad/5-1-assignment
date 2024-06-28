@@ -3,6 +3,7 @@ import { Country } from "../types/type";
 import { getCountry } from "../api/fetchApi";
 import CountryCard from "./CountryCard";
 import "./CountryList.css";
+import supabase from "../api/supabase";
 
 const CountryList: React.FC = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -29,7 +30,7 @@ const CountryList: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleSelectedCountry = (country: Country): void => {
+  const handleSelectedCountry = async (country: Country): Promise<void> => {
     const newSelectedCountry = selectCountry.filter(
       (c) => c.name.common !== country.name.common
     );
@@ -39,6 +40,18 @@ const CountryList: React.FC = () => {
     const newCountry = [...countries, country];
     newCountry.sort(sortLogic);
     setCountries(newCountry);
+
+    const { data, error } = await supabase.from("country").insert([
+      {
+        countryName: country.name.common,
+        flag: country.flags,
+      },
+    ]);
+    if (error) {
+      console.error("에러났네", error);
+    } else {
+      console.log("잘 추가됐네", data);
+    }
   };
 
   const handleCountry = (country: Country): void => {
