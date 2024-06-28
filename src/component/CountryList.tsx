@@ -59,7 +59,7 @@ const CountryList: React.FC = () => {
       <div className="container">
         <div className="item">
           <h2>내가 선택한 나라</h2>
-          <div>
+          <div className="list">
             {selectCountry.map((country: Country) => {
               return (
                 <div key={`${country.name.common}`}>
@@ -76,7 +76,7 @@ const CountryList: React.FC = () => {
       <div className="container">
         <div className="item">
           <h2>그냥 나라</h2>
-          <div>
+          <div className="list">
             {countries.map((country: Country) => {
               return (
                 <div key={`${country.name.common}`}>
