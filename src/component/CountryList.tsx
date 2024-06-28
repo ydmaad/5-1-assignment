@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Country } from "../types/type";
+import { Country, SaveCountry } from "../types/type";
 import { getCountry } from "../api/fetchApi";
 import CountryCard from "./CountryCard";
 import "./CountryList.css";
@@ -7,12 +7,12 @@ import supabase from "../api/supabase";
 import FetchData from "./FetchData";
 
 const CountryList: React.FC = () => {
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [selectCountry, setSelectCountry] = useState<Country[]>([]);
+  const [countries, setCountries] = useState<SaveCountry[]>([]);
+  const [selectCountry, setSelectCountry] = useState<SaveCountry[]>([]);
 
-  const sortLogic = (a: Country, b: Country) => {
-    if (a.name.common < b.name.common) return -1;
-    if (a.name.common > b.name.common) return 1;
+  const sortLogic = (a: SaveCountry, b: SaveCountry) => {
+    if (a.countryName < b.countryName) return -1;
+    if (a.countryName > b.countryName) return 1;
     return 0;
   };
 
@@ -21,7 +21,14 @@ const CountryList: React.FC = () => {
     const fetchData = async () => {
       try {
         const data: Country[] = await getCountry();
-        const sortList = data.sort(sortLogic);
+        const newData: SaveCountry[] = data.map((data) => {
+          return {
+            id: data.area,
+            countryName: data.name.common,
+            flag: data.flags.png,
+          };
+        });
+        const sortList = newData.sort(sortLogic);
         setCountries(sortList);
       } catch (error) {
         console.error("왜 에러가 났을까 =>", error);
@@ -31,9 +38,22 @@ const CountryList: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleSelectedCountry = async (country: Country) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from("country").select();
+      if (error) {
+        console.log("error =>", error);
+      } else {
+        console.log("data =>", data);
+        setSelectCountry(data);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handleSelectedCountry = async (country: SaveCountry) => {
     const newSelectedCountry = selectCountry.filter(
-      (c) => c.name.common !== country.name.common
+      (c) => c.countryName !== country.countryName
     );
     newSelectedCountry.sort(sortLogic);
     setSelectCountry(newSelectedCountry);
@@ -42,10 +62,35 @@ const CountryList: React.FC = () => {
     newCountry.sort(sortLogic);
     setCountries(newCountry);
 
+    const { data, error } = await supabase
+      .from("country")
+      .delete()
+      .eq("id", country.id);
+
+    if (error) {
+      console.error("에러났네", error);
+    } else {
+      console.log("잘 삭제됐네", data);
+    }
+  };
+
+  const handleCountry = async (country: SaveCountry) => {
+    const newCountry = countries.filter(
+      (c) => c.countryName !== country.countryName
+    );
+    newCountry.sort(sortLogic);
+    setCountries(newCountry);
+
+    const newSelectedCountry = [...selectCountry, country];
+    newSelectedCountry.sort(sortLogic);
+
+    setSelectCountry(newSelectedCountry);
+
     const { data, error } = await supabase.from("country").insert([
       {
-        countryName: country.name.common,
-        flag: country.flags.png,
+        id: country.id,
+        countryName: country.countryName,
+        flag: country.flag,
       },
     ]);
     if (error) {
@@ -55,34 +100,20 @@ const CountryList: React.FC = () => {
     }
   };
 
-  const handleCountry = (country: Country): void => {
-    const newCountry = countries.filter(
-      (c) => c.name.common !== country.name.common
-    );
-    newCountry.sort(sortLogic);
-    setCountries(newCountry);
-
-    const newSelectedCountry = [...selectCountry, country];
-    newSelectedCountry.sort(sortLogic);
-
-    setSelectCountry(newSelectedCountry);
-  };
-
   return (
     <>
-      <FetchData clickCountry={handleSelectedCountry} />
+      <FetchData
+        clickCountry={handleSelectedCountry}
+        selectCountry={selectCountry}
+      />
       <div className="container">
         <div className="item">
           <h2>그냥 나라</h2>
           <div className="list">
-            {countries.map((country: Country) => {
+            {countries.map((country: SaveCountry) => {
               return (
-                <div key={`${country.name.common}`}>
-                  <CountryCard
-                    countryName={country.name.common}
-                    flag={country.flags.png}
-                    clickCountry={handleCountry}
-                  />
+                <div key={`${country.countryName}`}>
+                  <CountryCard country={country} clickCountry={handleCountry} />
                 </div>
               );
             })}

@@ -1,21 +1,16 @@
 import React from "react";
-import { Country } from "../types/type";
+import { SaveCountry } from "../types/type";
 
 interface CardProps {
-  countryName: string;
-  flag: string;
-  clickCountry: (countryName: Country) => void;
+  clickCountry: (countryName: SaveCountry) => void;
+  country: SaveCountry;
 }
 
-const CountryCard: React.FC<CardProps> = ({
-  countryName,
-  flag,
-  clickCountry,
-}) => {
+const CountryCard: React.FC<CardProps> = ({ country, clickCountry }) => {
   return (
     <>
       <div
-        onClick={() => clickCountry(countryName)}
+        onClick={() => clickCountry(country)}
         style={{
           border: "1px solid black",
           borderRadius: "20px",
@@ -25,8 +20,8 @@ const CountryCard: React.FC<CardProps> = ({
           padding: "10px",
         }}
       >
-        <img src={flag} style={{ width: "250px", height: "150px" }} />
-        <h3>{countryName}</h3>
+        <img src={country.flag} style={{ width: "250px", height: "150px" }} />
+        <h3>{country.countryName}</h3>
       </div>
     </>
   );

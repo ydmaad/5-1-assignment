@@ -1,3 +1,9 @@
+export interface SaveCountry {
+  id: number;
+  countryName: string;
+  flag: string;
+}
+
 export interface Country {
   name: Name;
   tld: string[];
@@ -98,11 +104,4 @@ export interface Translation {
 export interface PostalCode {
   format: string;
   regex: string;
-}
-
-export interface SaveCountry {
-  id: number;
-  countryName: string;
-  created_at: string;
-  flag: string;
 }
