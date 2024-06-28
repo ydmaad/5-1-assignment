@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import supabase from "../api/supabase";
-import { SaveCountry } from "../types/type";
+import { Country, SaveCountry } from "../types/type";
+import CountryCard from "./CountryCard";
 
-const FetchData = () => {
+interface FetchDataProps {
+  clickCountry: (country: Country) => Promise<void>;
+}
+
+const FetchData = ({ clickCountry }: FetchDataProps) => {
   const [saveCountry, setSaveCountry] = useState<SaveCountry[]>([]);
 
   useEffect(() => {
@@ -26,12 +31,12 @@ const FetchData = () => {
           <div className="list">
             {saveCountry.map((country: SaveCountry) => {
               return (
-                <div key={`${country.id}`}>
-                  <img
-                    src={country.flag}
-                    style={{ width: "250px", height: "150px" }}
+                <div key={`${country.countryName}`}>
+                  <CountryCard
+                    countryName={country.countryName}
+                    flag={country.flag}
+                    clickCountry={clickCountry}
                   />
-                  <h3>{country.countryName}</h3>
                 </div>
               );
             })}

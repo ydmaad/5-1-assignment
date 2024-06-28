@@ -4,7 +4,6 @@ import FetchData from "./component/FetchData";
 const App = () => {
   return (
     <>
-      <FetchData />
       <CountryList />
     </>
   );

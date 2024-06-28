@@ -2,15 +2,20 @@ import React from "react";
 import { Country } from "../types/type";
 
 interface CardProps {
-  country: Country;
-  clickCountry: (country: Country) => void;
+  countryName: string;
+  flag: string;
+  clickCountry: (countryName: Country) => void;
 }
 
-const CountryCard: React.FC<CardProps> = ({ country, clickCountry }) => {
+const CountryCard: React.FC<CardProps> = ({
+  countryName,
+  flag,
+  clickCountry,
+}) => {
   return (
     <>
       <div
-        onClick={() => clickCountry(country)}
+        onClick={() => clickCountry(countryName)}
         style={{
           border: "1px solid black",
           borderRadius: "20px",
@@ -20,11 +25,8 @@ const CountryCard: React.FC<CardProps> = ({ country, clickCountry }) => {
           padding: "10px",
         }}
       >
-        <img
-          src={country.flags.png}
-          style={{ width: "250px", height: "150px" }}
-        />
-        <h3>{country.name.common}</h3>
+        <img src={flag} style={{ width: "250px", height: "150px" }} />
+        <h3>{countryName}</h3>
       </div>
     </>
   );

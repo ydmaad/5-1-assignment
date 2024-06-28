@@ -4,6 +4,7 @@ import { getCountry } from "../api/fetchApi";
 import CountryCard from "./CountryCard";
 import "./CountryList.css";
 import supabase from "../api/supabase";
+import FetchData from "./FetchData";
 
 const CountryList: React.FC = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -30,7 +31,7 @@ const CountryList: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleSelectedCountry = async (country: Country): Promise<void> => {
+  const handleSelectedCountry = async (country: Country) => {
     const newSelectedCountry = selectCountry.filter(
       (c) => c.name.common !== country.name.common
     );
@@ -44,7 +45,7 @@ const CountryList: React.FC = () => {
     const { data, error } = await supabase.from("country").insert([
       {
         countryName: country.name.common,
-        flag: country.flags,
+        flag: country.flags.png,
       },
     ]);
     if (error) {
@@ -69,23 +70,7 @@ const CountryList: React.FC = () => {
 
   return (
     <>
-      <div className="container">
-        <div className="item">
-          <h2>내가 선택한 나라</h2>
-          <div className="list">
-            {selectCountry.map((country: Country) => {
-              return (
-                <div key={`${country.name.common}`}>
-                  <CountryCard
-                    country={country}
-                    clickCountry={handleSelectedCountry}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      <FetchData clickCountry={handleSelectedCountry} />
       <div className="container">
         <div className="item">
           <h2>그냥 나라</h2>
@@ -93,7 +78,11 @@ const CountryList: React.FC = () => {
             {countries.map((country: Country) => {
               return (
                 <div key={`${country.name.common}`}>
-                  <CountryCard country={country} clickCountry={handleCountry} />
+                  <CountryCard
+                    countryName={country.name.common}
+                    flag={country.flags.png}
+                    clickCountry={handleCountry}
+                  />
                 </div>
               );
             })}
